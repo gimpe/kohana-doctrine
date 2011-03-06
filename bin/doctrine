@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+
+// paths from index.php
+$application   = '/home/gimpe/stuff-tracker/application/';
+$modules       = '/home/gimpe/vendor/kohana-modules/';
+$system        = '/home/gimpe/vendor/kohana-3.1/system/';
+
+// define constants (index.php)
+define('DOCROOT', realpath(dirname(__FILE__)).DIRECTORY_SEPARATOR);
+define('EXT', '.php');
+define('APPPATH', realpath($application) . DIRECTORY_SEPARATOR);
+define('MODPATH', realpath($modules) . DIRECTORY_SEPARATOR);
+define('SYSPATH', realpath($system) . DIRECTORY_SEPARATOR);
+
+// include your Kohana application bootstrap
+include $application . '/bootstrap.php';
+
+Kohana::$caching = FALSE;
+
+// restore PHP handler for CLI display
+restore_error_handler();
+restore_exception_handler();
+
+include 'doctrine.php';
