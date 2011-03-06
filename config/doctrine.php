@@ -1,5 +1,10 @@
 <?php
 
+/**
+* @author gimpe
+* @license http://creativecommons.org/licenses/by-sa/3.0/
+*/
+
 return array(
     'doctrine_path' => '/home/gimpe/vendor/doctrine-orm/',
     'entities_path' => APPPATH . '/classes/',

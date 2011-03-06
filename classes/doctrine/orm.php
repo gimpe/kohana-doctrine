@@ -1,8 +1,11 @@
 <?php
 
 /**
- *
- */
+* Doctrine_ORM
+*
+* @author gimpe
+* @license http://creativecommons.org/licenses/by-sa/3.0/
+*/
 class Doctrine_ORM
 {
     private static $doctrine_config;
@@ -10,8 +13,9 @@ class Doctrine_ORM
     private $em;
 
     /**
+     * set Kohana database configuration
      *
-     * @param <type> $doctrine_config
+     * @param array $doctrine_config
      */
     public static function set_config($doctrine_config)
     {
@@ -19,12 +23,13 @@ class Doctrine_ORM
     }
 
     /**
+     * constructor, you can specify which database group to use (default: 'default')
      *
-     * @param <type> $database_group 
+     * @param string $database_group
      */
     public function __construct($database_group = 'default')
     {
-        // if conig was not set by init.php, load it
+        // if config was not set by init.php, load it
         if (self::$doctrine_config === NULL)
         {
             self::$doctrine_config = Kohana::config('doctrine');
@@ -32,12 +37,12 @@ class Doctrine_ORM
 
         $config = new \Doctrine\ORM\Configuration();
 
-        // Proxy Configuration
+        // proxy configuration
         $config->setProxyDir(self::$doctrine_config['proxy_dir']);
         $config->setProxyNamespace(self::$doctrine_config['proxy_namespace']);
         $config->setAutoGenerateProxyClasses((Kohana::$environment == Kohana::DEVELOPMENT));
 
-        // Caching Configuration
+        // caching configuration
         // @todo make this configurable
         $cache = new \Doctrine\Common\Cache\MemcacheCache();
         $memcache = new Memcache();
@@ -45,7 +50,7 @@ class Doctrine_ORM
         $cache->setMemcache($memcache);
         $config->setMetadataCacheImpl($cache);
 
-        // Mapping Configuration
+        // mapping configuration
         // @todo make this configurable
 #        if (PHP_SAPI == 'cli')
 #        {
@@ -58,7 +63,7 @@ class Doctrine_ORM
 #            $config->setMetadataDriverImpl($driverImpl);
 #        }
 
-        // Mappings between Kohaha database types and Doctrine database drivers
+        // mappings between Kohaha database types and Doctrine database drivers
         // @see http://kohanaframework.org/3.1/guide/database/config#connection-settings
         // @see http://www.doctrine-project.org/docs/dbal/2.0/en/reference/configuration.html#connection-details
         $type_driver_mapping = array(
@@ -70,10 +75,10 @@ class Doctrine_ORM
             //'' => 'oci8',
         );
 
-        // Get $database_group config
+        // get $database_group config
         $database_config = Arr::GET(Kohana::config('database'), $database_group, array());
 
-        // Database configuration
+        // database configuration
         $connectionOptions = array(
             'driver' => $type_driver_mapping[$database_config['type']],
             'host' => $database_config['connection']['hostname'],
@@ -83,17 +88,17 @@ class Doctrine_ORM
             'charset' => $database_config['charset'],
         );
 
-        // Create Entity Manager
+        // create Entity Manager
         $this->evm = new \Doctrine\Common\EventManager();
         $this->em  = \Doctrine\ORM\EntityManager::create($connectionOptions, $config, $this->evm);
 
-        // Specify the charset with MySQL/PDO
+        // specify the charset for MySQL/PDO
         if ($type_driver_mapping[$database_config['type']] == 'pdo_mysql')
         {
             $this->em->getEventManager()->addEventSubscriber(new \Doctrine\DBAL\Event\Listeners\MysqlSessionInit($database_config['charset'], 'utf8_unicode_ci'));
         }
 
-        // Profiling
+        // profiling
         if ($database_config['profiling'])
         {
             // @todo
@@ -101,8 +106,9 @@ class Doctrine_ORM
     }
 
     /**
+     * get EntityManager
      *
-     * @return <type>
+     * @return \Doctrine\ORM\EntityManager
      */
     public function get_entity_manager()
     {
@@ -110,8 +116,9 @@ class Doctrine_ORM
     }
 
     /**
+     * get EventManager
      *
-     * @return <type>
+     * @return \Doctrine\Common\EventManager
      */
     public function get_event_manager()
     {

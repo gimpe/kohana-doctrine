@@ -1,6 +1,11 @@
 #!/usr/bin/env php
 <?php
 
+/**
+* @author gimpe
+* @license http://creativecommons.org/licenses/by-sa/3.0/
+*/
+
 // paths from index.php
 $application   = '/home/gimpe/stuff-tracker/application/';
 $modules       = '/home/gimpe/vendor/kohana-modules/';
@@ -16,6 +21,7 @@ define('SYSPATH', realpath($system) . DIRECTORY_SEPARATOR);
 // include your Kohana application bootstrap
 include $application . '/bootstrap.php';
 
+// turn off caching
 Kohana::$caching = FALSE;
 
 // restore PHP handler for CLI display

@@ -1,8 +1,14 @@
 <?php
 
-// include config
+/**
+* @author gimpe
+* @license http://creativecommons.org/licenses/by-sa/3.0/
+*/
+
+// include kohana-doctrine config
 $doctrine_config = Kohana::config('doctrine');
 
+// include Donctrine's ClassLoader.php
 include $doctrine_config['doctrine_path'] . 'Doctrine/Common/ClassLoader.php';
 
 $classLoader = new \Doctrine\Common\ClassLoader('Doctrine', $doctrine_config['doctrine_path']);
