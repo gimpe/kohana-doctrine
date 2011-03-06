@@ -1,11 +1,12 @@
 <?php
 
 /**
-* Doctrine_ORM
-*
-* @author gimpe
-* @license http://creativecommons.org/licenses/by-sa/3.0/
-*/
+ * Doctrine_ORM
+ *
+ * @author gimpe
+ * @link http://github.com/gimpe/kohana-doctrine
+ * @license http://creativecommons.org/licenses/by-sa/3.0/
+ */
 class Doctrine_ORM
 {
     private static $doctrine_config;

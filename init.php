@@ -1,9 +1,10 @@
 <?php
 
 /**
-* @author gimpe
-* @license http://creativecommons.org/licenses/by-sa/3.0/
-*/
+ * @author gimpe
+ * @link http://github.com/gimpe/kohana-doctrine
+ * @license http://creativecommons.org/licenses/by-sa/3.0/
+ */
 
 // include kohana-doctrine config
 $doctrine_config = Kohana::config('doctrine');
