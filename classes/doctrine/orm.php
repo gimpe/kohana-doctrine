@@ -5,7 +5,7 @@
  *
  * @author gimpe
  * @link http://github.com/gimpe/kohana-doctrine
- * @license http://creativecommons.org/licenses/by-sa/3.0/
+ * @license CC BY 3.0 (http://creativecommons.org/licenses/by/3.0/)
  */
 class Doctrine_ORM
 {

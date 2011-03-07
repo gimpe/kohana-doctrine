@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @author gimpe
+ * @link http://github.com/gimpe/kohana-doctrine
+ * @license CC BY 3.0 (http://creativecommons.org/licenses/by/3.0/)
+ */
+
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArgvInput;
 
