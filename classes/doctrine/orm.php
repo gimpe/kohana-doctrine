@@ -44,11 +44,20 @@ class Doctrine_ORM
         $config->setAutoGenerateProxyClasses((Kohana::$environment == Kohana::DEVELOPMENT));
 
         // caching configuration
-        // @todo make this configurable
-        $cache = new \Doctrine\Common\Cache\MemcacheCache();
-        $memcache = new Memcache();
-        $memcache->connect('memgear1.local', 11211, 300);
-        $cache->setMemcache($memcache);
+        // @todo make this configurable; use cache module?
+        if (Kohana::$environment === Kohana::DEVELOPMENT)
+        {
+            $cache = new \Doctrine\Common\Cache\ArrayCache();
+        }
+        else if (FALSE)
+        {
+            $cache = new \Doctrine\Common\Cache\MemcacheCache();
+        }
+        else
+        {
+            $cache = new \Doctrine\Common\Cache\ApcCache();
+        }
+
         $config->setMetadataCacheImpl($cache);
 
         // mapping configuration
