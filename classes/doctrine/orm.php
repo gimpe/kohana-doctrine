@@ -1,7 +1,7 @@
 <?php
 
 /**
- * creates a Doctrine EntityManager for a specifict database group
+ * creates a Doctrine EntityManager for a specific database group
  *
  * LICENSE: THE WORK (AS DEFINED BELOW) IS PROVIDED UNDER THE TERMS OF THIS
  * CREATIVE COMMONS PUBLIC LICENSE ("CCPL" OR "LICENSE"). THE WORK IS PROTECTED
@@ -33,7 +33,7 @@ use \Doctrine\ORM\Mapping\Driver\XmlDriver;
 use \Doctrine\ORM\Mapping\Driver\PHPDriver;
 
 /**
- * creates a Doctrine EntityManager for a specifict database group
+ * creates a Doctrine EntityManager for a specific database group
  *
  * @category   module
  * @package    kohana-doctrine
