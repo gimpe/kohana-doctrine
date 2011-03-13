@@ -1,15 +1,51 @@
 <?php
 
 /**
- * Doctrine_ORM
+ * creates a Doctrine EntityManager for a specifict database group
  *
- * @author gimpe
- * @link http://github.com/gimpe/kohana-doctrine
- * @license CC BY 3.0 (http://creativecommons.org/licenses/by/3.0/)
+ * LICENSE: THE WORK (AS DEFINED BELOW) IS PROVIDED UNDER THE TERMS OF THIS
+ * CREATIVE COMMONS PUBLIC LICENSE ("CCPL" OR "LICENSE"). THE WORK IS PROTECTED
+ * BY COPYRIGHT AND/OR OTHER APPLICABLE LAW. ANY USE OF THE WORK OTHER THAN AS
+ * AUTHORIZED UNDER THIS LICENSE OR COPYRIGHT LAW IS PROHIBITED.
+ *
+ * BY EXERCISING ANY RIGHTS TO THE WORK PROVIDED HERE, YOU ACCEPT AND AGREE TO
+ * BE BOUND BY THE TERMS OF THIS LICENSE. TO THE EXTENT THIS LICENSE MAY BE
+ * CONSIDERED TO BE A CONTRACT, THE LICENSOR GRANTS YOU THE RIGHTS CONTAINED HERE
+ * IN CONSIDERATION OF YOUR ACCEPTANCE OF SUCH TERMS AND CONDITIONS.
+ *
+ * @category   module
+ * @package    kohana-doctrine
+ * @author     gimpe
+ * @copyright  2011 International Jaywalkers
+ * @license    http://creativecommons.org/licenses/by/3.0/ CC BY 3.0
+ * @link       http://github.com/gimpe/kohana-doctrine
  */
+
+use \Doctrine\ORM\Configuration;
+use \Doctrine\ORM\EntityManager;
+use \Doctrine\Common\EventManager;
+use \Doctrine\Common\Cache\ArrayCache;
+use \Doctrine\Common\Cache\MemcacheCache;
+use \Doctrine\Common\Cache\ApcCache;
+use \Doctrine\DBAL\Event\Listeners\MysqlSessionInit;
+use \Doctrine\ORM\Mapping\Driver\YamlDriver;
+use \Doctrine\ORM\Mapping\Driver\XmlDriver;
+use \Doctrine\ORM\Mapping\Driver\PHPDriver;
+
+/**
+ * creates a Doctrine EntityManager for a specifict database group
+ *
+ * @category   module
+ * @package    kohana-doctrine
+ * @author     gimpe
+ * @copyright  2011 International Jaywalkers
+ * @license    http://creativecommons.org/licenses/by/3.0/ CC BY 3.0
+ * @link       http://github.com/gimpe/kohana-doctrine
+*/
 class Doctrine_ORM
 {
     private static $doctrine_config;
+    private static $database_config;
     private $evm;
     private $em;
 
@@ -24,7 +60,7 @@ class Doctrine_ORM
     }
 
     /**
-     * constructor, you can specify which database group to use (default: 'default')
+     * __constructor, you can specify which database group to use (default: 'default')
      *
      * @param string $database_group
      */
@@ -36,7 +72,7 @@ class Doctrine_ORM
             self::$doctrine_config = Kohana::config('doctrine');
         }
 
-        $config = new \Doctrine\ORM\Configuration();
+        $config = new Configuration();
 
         // proxy configuration
         $config->setProxyDir(self::$doctrine_config['proxy_dir']);
@@ -44,75 +80,69 @@ class Doctrine_ORM
         $config->setAutoGenerateProxyClasses((Kohana::$environment == Kohana::DEVELOPMENT));
 
         // caching configuration
-        // @todo make this configurable; use cache module?
-        if (Kohana::$environment === Kohana::DEVELOPMENT)
-        {
-            $cache = new \Doctrine\Common\Cache\ArrayCache();
-        }
-        else if (FALSE)
-        {
-            $cache = new \Doctrine\Common\Cache\MemcacheCache();
-        }
-        else
-        {
-            $cache = new \Doctrine\Common\Cache\ApcCache();
-        }
+        // @todo make this configurable; use kohana-cache module?
+        $cache_implementation = new ArrayCache();
+        // $cache_implementation = new MemcacheCache();
+        // $cache_implementation = new ApcCache();
+        $config->setMetadataCacheImpl($cache_implementation);
 
-        $config->setMetadataCacheImpl($cache);
 
-        // mapping configuration
-        // @todo make this configurable
-#        if (PHP_SAPI == 'cli')
-#        {
-            $driverImpl = new \Doctrine\ORM\Mapping\Driver\YamlDriver(array(APPPATH . '../mappings/yml'));
-            $config->setMetadataDriverImpl($driverImpl);
-#        }
-#        else
-#        {
-#            $driverImpl = $config->newDefaultAnnotationDriver(array(APPPATH . 'Entities'));
-#            $config->setMetadataDriverImpl($driverImpl);
-#        }
+        // mappings/metadata driver configuration
+        $driver_implementation = NULL;
+        switch (self::$doctrine_config['mappings_driver'])
+        {
+            case 'php':
+                $driver_implementation = new PHPDriver(array(self::$doctrine_config['mappings_path']));
+                break;
+            case 'xml':
+                $driver_implementation = new XmlDriver(array(self::$doctrine_config['mappings_path']));
+                break;
+            default:
+            case 'yaml':
+                $driver_implementation = new YamlDriver(array(self::$doctrine_config['mappings_path']));
+                break;
+        }
+        $config->setMetadataDriverImpl($driver_implementation);
 
-        // mappings between Kohaha database types and Doctrine database drivers
-        // @see http://kohanaframework.org/3.1/guide/database/config#connection-settings
-        // @see http://www.doctrine-project.org/docs/dbal/2.0/en/reference/configuration.html#connection-details
-        $type_driver_mapping = array(
-            'mysql' => 'pdo_mysql',
-            'pdo' => 'pdo_mysql',
-            //'' => 'pdo_sqlite',
-            //'' => 'pdo_pgsql',
-            //'' => 'pdo_oci',
-            //'' => 'oci8',
-        );
+        // load config if not defined
+        if (self::$database_config === NULL)
+        {
+            self::$database_config = Kohana::config('database');
+        }
 
         // get $database_group config
-        $database_config = Arr::GET(Kohana::config('database'), $database_group, array());
+        $db_config = Arr::GET(self::$database_config, $database_group, array());
+
+        // verify that the database group exists
+        if (empty($db_config))
+        {
+            exit('database-group "' . $database_group . '" doesn\'t exists' . PHP_EOL);
+        }
 
         // database configuration
         $connectionOptions = array(
-            'driver' => $type_driver_mapping[$database_config['type']],
-            'host' => $database_config['connection']['hostname'],
-            'dbname' => $database_config['connection']['database'],
-            'user' => $database_config['connection']['username'],
-            'password' => $database_config['connection']['password'],
-            'charset' => $database_config['charset'],
+            'driver' => self::$doctrine_config['type_driver_mapping'][$db_config['type']],
+            'host' => $db_config['connection']['hostname'],
+            'dbname' => $db_config['connection']['database'],
+            'user' => $db_config['connection']['username'],
+            'password' => $db_config['connection']['password'],
+            'charset' => $db_config['charset'],
         );
 
         // create Entity Manager
-        $this->evm = new \Doctrine\Common\EventManager();
-        $this->em  = \Doctrine\ORM\EntityManager::create($connectionOptions, $config, $this->evm);
+        $this->evm = new EventManager();
+        $this->em  = EntityManager::create($connectionOptions, $config, $this->evm);
 
         // specify the charset for MySQL/PDO
-        if ($type_driver_mapping[$database_config['type']] == 'pdo_mysql')
+        if (self::$doctrine_config['type_driver_mapping'][$db_config['type']] == 'pdo_mysql')
         {
-            $this->em->getEventManager()->addEventSubscriber(new \Doctrine\DBAL\Event\Listeners\MysqlSessionInit($database_config['charset'], 'utf8_unicode_ci'));
+            $this->em->getEventManager()->addEventSubscriber(new MysqlSessionInit($db_config['charset'], 'utf8_unicode_ci'));
         }
 
-        // profiling
-        if ($database_config['profiling'])
-        {
-            // @todo
-        }
+        // @todo profiling
+        //if ($db_config['profiling'])
+        //{
+        //}
     }
 
     /**

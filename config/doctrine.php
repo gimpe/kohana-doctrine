@@ -34,6 +34,8 @@ return array(
     // doctrine config
     'proxy_dir' => APPPATH . 'classes/Proxies',
     'proxy_namespace' => 'Proxies',
+    'mappings_path' => APPPATH . '../mappings/yml',
+    'mappings_driver' => 'yml',
     // mappings between Kohaha database types and Doctrine database drivers
     // @see http://kohanaframework.org/3.1/guide/database/config#connection-settings
     // @see http://www.doctrine-project.org/docs/dbal/2.0/en/reference/configuration.html#connection-details
