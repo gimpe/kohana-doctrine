@@ -28,13 +28,13 @@ return array(
     'doctrine_path' => MODPATH . 'kohana-doctrine/vendor/doctrine-orm/',
     // classloader config
     'entities_namespace' => 'Entities',
-    'entities_path' => APPPATH . '/classes/',
+    'entities_path' => APPPATH . 'classes',
     'proxies_namespace' => 'Proxies',
-    'proxies_path' => APPPATH . '/classes/',
+    'proxies_path' => APPPATH . 'classes',
     // doctrine config
     'proxy_dir' => APPPATH . 'classes/Proxies',
     'proxy_namespace' => 'Proxies',
-    'mappings_path' => APPPATH . '../mappings/yml',
+    'mappings_path' => APPPATH . 'mappings/yml',
     'mappings_driver' => 'yml',
     // mappings between Kohaha database types and Doctrine database drivers
     // @see http://kohanaframework.org/3.1/guide/database/config#connection-settings

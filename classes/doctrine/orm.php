@@ -86,7 +86,6 @@ class Doctrine_ORM
         // $cache_implementation = new ApcCache();
         $config->setMetadataCacheImpl($cache_implementation);
 
-
         // mappings/metadata driver configuration
         $driver_implementation = NULL;
         switch (self::$doctrine_config['mappings_driver'])
