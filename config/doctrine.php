@@ -22,7 +22,6 @@
  * @license   http://creativecommons.org/licenses/by/3.0/ CC BY 3.0
  * @link      http://github.com/gimpe/kohana-doctrine
  */
-
 return array(
     // location of the "Doctrine" directory
     'doctrine_path' => MODPATH . 'kohana-doctrine/vendor/doctrine-orm/',

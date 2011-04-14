@@ -1,7 +1,12 @@
 <?php
 
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\ArgvInput;
+
 /**
- * extends Doctrine's Symfony/Console/Application
+ * extends Doctrine's Symfony/Console/Application to add an extra input option:
+ * --database-group. This option is used to select a Kohana database group in
+ * "application/config/database.php"
  *
  * LICENSE: THE WORK (AS DEFINED BELOW) IS PROVIDED UNDER THE TERMS OF THIS
  * CREATIVE COMMONS PUBLIC LICENSE ("CCPL" OR "LICENSE"). THE WORK IS PROTECTED
@@ -12,22 +17,6 @@
  * BE BOUND BY THE TERMS OF THIS LICENSE. TO THE EXTENT THIS LICENSE MAY BE
  * CONSIDERED TO BE A CONTRACT, THE LICENSOR GRANTS YOU THE RIGHTS CONTAINED HERE
  * IN CONSIDERATION OF YOUR ACCEPTANCE OF SUCH TERMS AND CONDITIONS.
- *
- * @category  module
- * @package   kohana-doctrine
- * @author    gimpe <gimpehub@intljaywalkers.com>
- * @copyright 2011 International Jaywalkers
- * @license   http://creativecommons.org/licenses/by/3.0/ CC BY 3.0
- * @link      http://github.com/gimpe/kohana-doctrine
- */
-
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\ArgvInput;
-
-/**
- * extends Doctrine's Symfony/Console/Application to add an extra input option:
- * --database-group. This option is used to select a Kohana database group in
- * "application/config/database.php"
  *
  * @category  module
  * @package   kohana-doctrine
