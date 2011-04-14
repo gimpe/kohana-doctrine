@@ -13,12 +13,12 @@
  * CONSIDERED TO BE A CONTRACT, THE LICENSOR GRANTS YOU THE RIGHTS CONTAINED HERE
  * IN CONSIDERATION OF YOUR ACCEPTANCE OF SUCH TERMS AND CONDITIONS.
  *
- * @category   module
- * @package    kohana-doctrine
- * @author     gimpe
- * @copyright  2011 International Jaywalkers
- * @license    http://creativecommons.org/licenses/by/3.0/ CC BY 3.0
- * @link       http://github.com/gimpe/kohana-doctrine
+ * @category  module
+ * @package   kohana-doctrine
+ * @author    gimpe <gimpehub@intljaywalkers.com>
+ * @copyright 2011 International Jaywalkers
+ * @license   http://creativecommons.org/licenses/by/3.0/ CC BY 3.0
+ * @link      http://github.com/gimpe/kohana-doctrine
  */
 
 use Symfony\Component\Console\Input\InputOption;
@@ -29,12 +29,12 @@ use Symfony\Component\Console\Input\ArgvInput;
  * --database-group. This option is used to select a Kohana database group in
  * "application/config/database.php"
  *
- * @category   module
- * @package    kohana-doctrine
- * @author     gimpe
- * @copyright  2011 International Jaywalkers
- * @license    http://creativecommons.org/licenses/by/3.0/ CC BY 3.0
- * @link       http://github.com/gimpe/kohana-doctrine
+ * @category  module
+ * @package   kohana-doctrine
+ * @author    gimpe <gimpehub@intljaywalkers.com>
+ * @copyright 2011 International Jaywalkers
+ * @license   http://creativecommons.org/licenses/by/3.0/ CC BY 3.0
+ * @link      http://github.com/gimpe/kohana-doctrine
 */
 class Console_Application extends \Symfony\Component\Console\Application
 {

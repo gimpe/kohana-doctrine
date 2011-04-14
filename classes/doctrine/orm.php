@@ -15,7 +15,7 @@
  *
  * @category   module
  * @package    kohana-doctrine
- * @author     gimpe
+ * @author     gimpe <gimpehub@intljaywalkers.com>
  * @copyright  2011 International Jaywalkers
  * @license    http://creativecommons.org/licenses/by/3.0/ CC BY 3.0
  * @link       http://github.com/gimpe/kohana-doctrine
@@ -35,12 +35,12 @@ use \Doctrine\ORM\Mapping\Driver\PHPDriver;
 /**
  * creates a Doctrine EntityManager for a specific database group
  *
- * @category   module
- * @package    kohana-doctrine
- * @author     gimpe
- * @copyright  2011 International Jaywalkers
- * @license    http://creativecommons.org/licenses/by/3.0/ CC BY 3.0
- * @link       http://github.com/gimpe/kohana-doctrine
+ * @category  module
+ * @package   kohana-doctrine
+ * @author    gimpe <gimpehub@intljaywalkers.com>
+ * @copyright 2011 International Jaywalkers
+ * @license   http://creativecommons.org/licenses/by/3.0/ CC BY 3.0
+ * @link      http://github.com/gimpe/kohana-doctrine
 */
 class Doctrine_ORM
 {
