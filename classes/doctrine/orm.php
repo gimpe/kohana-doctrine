@@ -74,6 +74,8 @@ class Doctrine_ORM
         // $cache_implementation = new MemcacheCache();
         // $cache_implementation = new ApcCache();
         $config->setMetadataCacheImpl($cache_implementation);
+        //$config->setQueryCacheImpl($cache_implementation);
+        //$config->setResultCacheImpl($cache_implementation);
 
         // mappings/metadata driver configuration
         $driver_implementation = NULL;
