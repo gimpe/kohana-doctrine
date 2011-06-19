@@ -1,7 +1,7 @@
 kohana-doctrine
 ===============
 
-Kohana 3.1 module to integrate Doctrine ORM 2.0.2.
+Kohana 3.1 module to integrate Doctrine ORM 2.0.6.
 
 
 License:
