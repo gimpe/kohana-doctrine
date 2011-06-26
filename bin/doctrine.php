@@ -3,6 +3,9 @@
 /**
  * kohana-doctrine command line interface
  *
+ * add an extra input option: --database-group
+ * This option is used to select another Kohana database group
+ * 
  * LICENSE: THE WORK (AS DEFINED BELOW) IS PROVIDED UNDER THE TERMS OF THIS
  * CREATIVE COMMONS PUBLIC LICENSE ("CCPL" OR "LICENSE"). THE WORK IS PROTECTED
  * BY COPYRIGHT AND/OR OTHER APPLICABLE LAW. ANY USE OF THE WORK OTHER THAN AS
@@ -22,9 +25,17 @@
  */
 
 // your installation paths (needed to run CLI)
-$application = realpath(__DIR__ . '/../../../application/');
-$modules     = realpath(__DIR__ . '/../../');
-$system      = realpath(__DIR__ . '/../../../system/');
+if (file_exists(__DIR__ . '/../../../../application/'))
+{
+    $system      = realpath(__DIR__ . '/../../../kohana/system/');
+    $application = realpath(__DIR__ . '/../../../../application/');
+}
+else
+{
+    $system      = realpath(__DIR__ . '/../../../system/');
+    $application = realpath(__DIR__ . '/../../../application/');
+}
+$modules = realpath(__DIR__ . '/../../');
 
 if ($application === FALSE || $modules === FALSE || $system === FALSE)
 {
@@ -78,7 +89,9 @@ $helperSet = new \Symfony\Component\Console\Helper\HelperSet(array(
 ));
 
 // create and run Symfony Console application
-$cli = new Console_Application('Doctrine Command Line Interface', \Doctrine\ORM\Version::VERSION);
+$cli = new Symfony\Component\Console\Application('Kohana Doctrine Command Line Interface</info>'
+        . PHP_EOL . '<comment>use --database-group to specifify another group from database.php (defaut: default)</comment>'
+        . PHP_EOL . '<info>Doctrine', \Doctrine\ORM\Version::VERSION);
 $cli->setCatchExceptions(true);
 $cli->setHelperSet($helperSet);
 \Doctrine\ORM\Tools\Console\ConsoleRunner::addCommands($cli);
